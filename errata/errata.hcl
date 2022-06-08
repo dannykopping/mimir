@@ -5,7 +5,7 @@ options {
   base_url = "https://grafana.com/docs/mimir/latest/errata/"
 }
 
-errors "label-name-too-long" {
+error "label-name-too-long" {
   message    = "Received a series whose label name length exceeds the limit, label: '%.200s' series: '%.200s'"
   categories = ["validation", "label"]
   guide      = file("guides/label-name-too-long.md")
@@ -20,7 +20,7 @@ errors "label-name-too-long" {
   }
 }
 
-errors "label-value-too-long" {
+error "label-value-too-long" {
   message    = "received a series whose label value length exceeds the limit, value: '%.200s' (truncated) series: '%.200s'"
   categories = ["validation", "label"]
   guide      = file("guides/label-value-too-long.md")
