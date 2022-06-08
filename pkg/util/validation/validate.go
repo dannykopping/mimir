@@ -43,8 +43,8 @@ var (
 	reasonInvalidMetricName      = metricReasonFromErrorID(globalerror.InvalidMetricName)
 	reasonMaxLabelNamesPerSeries = metricReasonFromErrorID(globalerror.MaxLabelNamesPerSeries)
 	reasonInvalidLabel           = metricReasonFromErrorID(globalerror.SeriesInvalidLabel)
-	reasonLabelNameTooLong       = metricReasonFromErrorID(globalerror.SeriesLabelNameTooLong)
-	reasonLabelValueTooLong      = metricReasonFromErrorID(globalerror.SeriesLabelValueTooLong)
+	reasonLabelNameTooLong       = metricReasonFromErrorID(errata.ErrLabelNameTooLong)
+	reasonLabelValueTooLong      = metricReasonFromErrorID(errata.ErrLabelValueTooLong)
 	reasonDuplicateLabelNames    = metricReasonFromErrorID(globalerror.SeriesWithDuplicateLabelNames)
 	reasonLabelsNotSorted        = metricReasonFromErrorID(globalerror.SeriesLabelsNotSorted)
 	reasonTooFarInFuture         = metricReasonFromErrorID(globalerror.SampleTooFarInFuture)
@@ -227,7 +227,7 @@ func ValidateLabels(cfg LabelValidationConfig, userID string, ls []mimirpb.Label
 			return errata.NewLabelNameTooLongErr(nil, l.Name, formatLabelSet(ls))
 		} else if len(l.Value) > maxLabelValueLength {
 			DiscardedSamples.WithLabelValues(reasonLabelValueTooLong, userID).Inc()
-			return newLabelValueTooLongError(ls, l.Value)
+			return errata.NewLabelValueTooLongErr(nil, l.Value, formatLabelSet(ls))
 		} else if lastLabelName == l.Name {
 			DiscardedSamples.WithLabelValues(reasonDuplicateLabelNames, userID).Inc()
 			return newDuplicatedLabelError(ls, l.Name)

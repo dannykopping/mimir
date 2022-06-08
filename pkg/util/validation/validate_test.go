@@ -99,10 +99,11 @@ func TestValidateLabels(t *testing.T) {
 		{
 			map[model.LabelName]model.LabelValue{model.MetricNameLabel: "badLabelValue", "much_shorter_name": "test_value_please_ignore_no_really_nothing_to_see_here"},
 			false,
-			newLabelValueTooLongError([]mimirpb.LabelAdapter{
-				{Name: model.MetricNameLabel, Value: "badLabelValue"},
-				{Name: "much_shorter_name", Value: "test_value_please_ignore_no_really_nothing_to_see_here"},
-			}, "test_value_please_ignore_no_really_nothing_to_see_here"),
+			errata.NewLabelValueTooLongErr(nil, "test_value_please_ignore_no_really_nothing_to_see_here",
+				formatLabelSet([]mimirpb.LabelAdapter{
+					{Name: model.MetricNameLabel, Value: "badLabelValue"},
+					{Name: "much_shorter_name", Value: "test_value_please_ignore_no_really_nothing_to_see_here"},
+				})),
 		},
 		{
 			map[model.LabelName]model.LabelValue{model.MetricNameLabel: "foo", "bar": "baz", "blip": "blop"},
